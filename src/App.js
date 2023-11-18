@@ -1,24 +1,62 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import Form from "./components/Form";
 
 function App() {
+
+  const [count, setCount] = useState(0)
+  const [multiplo, setMultiplo] = useState(0)
+
+  const [user, setUser] = useState('')
+
+  function incrementar() {
+    setCount(count + 1);
+  }
+  function decrementar() {
+    setCount(count - 1);
+  }
+
+  async function buscarUsuarios() {
+    try {
+      let req = await fetch('http://localhost:3002/user')
+      let res = await req.json()
+      console.log(res);
+      setUser(res);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    buscarUsuarios();
+  }, [])
+
+  useEffect(() => {
+    console.log("O valor do contador foi modificado!");
+    setMultiplo(count * 2)
+
+
+  }, [count])
+
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+
+      {/* <button onClick={incrementar}>Incrementar</button>
+      <p>{count}</p>
+      <button onClick={decrementar}>Decrementar</button>
+
+      <p>Multiplo: </p>
+      <p>{multiplo}</p>
+
+      <p>{user.name}</p> */}
+
+      {/* <button onClick={() => setCount(count + 1)}>Renderizar</button>
+      <p>{count}</p> */}
+      {/* <p>{user.name}</p> */}
+
+      <Form/>
+    </>
   );
 }
 
